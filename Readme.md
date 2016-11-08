@@ -185,3 +185,16 @@ NSLog(@"nav height - %f", rectNav.size.height); // 高度
     NSLog( @"text changed: %@", theTextField.text);
 }
 ```
+
+### collectionView 需要实现的方法
+
+```swift
+// 每个 section 显示 cell 的数量
+func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 7
+}
+// 每个 view 显示 section 的数量
+func numberOfSections(in collectionView: UICollectionView) -> Int {
+    return 3
+}
+```
