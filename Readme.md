@@ -6,9 +6,15 @@
 
 http://stackoverflow.com/questions/40234810/pod-install-the-dependency-is-not-used-in-any-concrete-target
 
-**A:** Your `Podfile` should contain in which target you want to install the cocoapods. The post installer in your Podfile setting only `ACTIVE_ARCH` flag to `NO` in each target.
+**A:** Your `Podfile` should contain in which target you want to install the
+cocoapods. The post installer in your Podfile setting only `ACTIVE_ARCH` flag to
+`NO` in each target.
 
-If you have more than 20 targets in your app, maybe try to remove `Podfile` and `Podfile.lock` and do `pod init` then CococaPods gem create a valid `Podfile` for your app. Then paste the cocoapods that your app using and paste the post installer instruction to the new Podfile and try to resinstall cocoapods using `pod install`
+If you have more than 20 targets in your app, maybe try to remove `Podfile` and
+`Podfile.lock` and do `pod init` then CococaPods gem create a valid `Podfile` for
+your app. Then paste the cocoapods that your app using and paste the post
+installer instruction to the new Podfile and try to resinstall cocoapods using
+`pod install`
 
 Look at the [CocoaPods site](https://guides.cocoapods.org/syntax/podfile.html) about Podfile.
 
@@ -55,7 +61,9 @@ https://www.zhihu.com/question/19763504
 
 使用`pod`的时候会有这个提示，是因为里面用了特别的引号`platform :ios, ‘8.1’`
 
-`Your Podfile has had smart quotes sanitised. To avoid issues in the future, you should not use TextEdit for editing it. If you are not using TextEdit, you should turn off smart quotes in your editor of choice.`
+>  Your Podfile has had smart quotes sanitised. To avoid issues in the future, you
+>  should not use TextEdit for editing it. If you are not using TextEdit, you should
+>  turn off smart quotes in your editor of choice.`
 
 ----
 
@@ -70,7 +78,8 @@ http://stackoverflow.com/questions/9458739/ld-warning-directory-not-found-for-op
 2.  Click on **Build Settings**
 3.  Under **Library Search Paths**, delete the paths
 
-And regarding the second error, sorry i can't help you out with that one. Hope someone else can help you out.
+And regarding the second error, sorry i can't help you out with that one. Hope
+someone else can help you out.
 
 Good luck,
 Nathan
@@ -101,7 +110,9 @@ for (UIView *child in view.subviews) {
 
 ### error
 
-> Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'unable to dequeue a cell with identifier Cell - must register a nib or a class for the identifier or connect a prototype cell in a storyboard
+> Terminating app due to uncaught exception 'NSInternalInconsistencyException',
+> reason: 'unable to dequeue a cell with identifier Cell - must register a nib
+> or a class for the identifier or connect a prototype cell in a storyboard
 
 
 ```obj-c
@@ -198,3 +209,84 @@ func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 3
 }
 ```
+
+### label 的一些拍版属性和方法
+
+|                  | 作用                        |
+ ----------------- | ----------------------------
+|`label.adjustsFontSizeToFitWidth = true` |  根据**label大小**调整**文字大小**
+|`label.sizeToFit()`| 自动调整**laibel大小**以适应内容宽度
+|`label.adjustsFontForContentSizeCategory = true`| 未知
+
+### 非https请求
+
+iOS 9中默认非HTTS的网络是被禁止的，当然我们也可以把NSAllowsArbitraryLoads设置为YES禁用ATS。
+不过iOS 10从2017年1月1日起苹果不允许我们通过这个方法跳过ATS，也就是说强制我们用HTTPS，如果不
+这样的话提交App可能会被拒绝。但是我们可以通过`NSExceptionDomains`来针对特定的域名开放HTTP
+可以容易通过审核。
+
+NSExceptionDomains方式 设置域。可以简单理解成，把不支持https协议的接口设置成http的接口。
+
+具体方法：
+
+1. 在项目的`info.plist`中添加一个Key：`App Transport Security Settings`，类型为`字典`类型。
+
+2. 然后给它添加一个`Exception Domains`，类型为`字典`类型；
+
+3. 把需要的支持的域添加給`Exception Domains`。其中域作为Key，类型为`字典`类型。
+
+4. 每个域下面需要设置3个属性： `NSIncludesSubdomains`、`NSExceptionRequiresForwardSecrecy`、
+   `NSExceptionAllowsInsecureHTTPLoads`。
+
+文／PengJiang（简书作者）
+
+原文链接：http://www.jianshu.com/p/6c14428956b8
+
+著作权归作者所有，转载请联系作者获得授权，并标注“简书作者”。
+
+### Info.plist 配置自定义字体
+`Info.plist`
+
+    Fonts provided by application 
+      Item 0   zenicon.ttf
+
+对应的xml标签是
+
+    <key>UIAppFonts</key>
+    <array>
+        <string>zenicon.ttf</string>
+    </array>
+
+其中的值是不带路径的
+
+### app的入口
+
+```swift
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
+
+    var window: UIWindow?
+
+    func application(application: UIApplication, 
+        didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    }
+    // 实现其他protocol
+}
+```
+
+### `[[UIScreen mainScreen] bounds]`获取尺寸不对
+
+解决办法1：(先在Images.xassets中创建LaunchImage,然后去ImageSource去选择)
+
+解决办法是在Images.xcassets中创建LaunchImage，并将它做为Launch Images Source(点击Use
+Asset Catalog,选择Imges Source，这前提是在Images.xcassets中先创建LaunchImage，这样才
+能在Images Source检测到你创建的LaunchImage)
+
+
+### assist editor打开的文件不对，可以在顶部导航栏第一项选 Manual 来指定
+
+### 切换 `ViewController`
+
+`UIApplication.sharedApplication().keyWindow?.rootViewController = CMTabBarController()`
+
+*** File's owner是什么，拉了之后就可以指定button的action了 ***
