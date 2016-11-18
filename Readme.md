@@ -247,7 +247,7 @@ NSExceptionDomains方式 设置域。可以简单理解成，把不支持https�
 ### Info.plist 配置自定义字体
 `Info.plist`
 
-    Fonts provided by application 
+    Fonts provided by application
       Item 0   zenicon.ttf
 
 对应的xml标签是
@@ -267,7 +267,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
     var window: UIWindow?
 
-    func application(application: UIApplication, 
+    func application(application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     }
     // 实现其他protocol
@@ -288,5 +288,124 @@ Asset Catalog,选择Imges Source，这前提是在Images.xcassets中先创建Lau
 ### 切换 `ViewController`
 
 `UIApplication.sharedApplication().keyWindow?.rootViewController = CMTabBarController()`
+
+### view 闪一下就不见的问题
+
+```swift
+@IBAction func enter(sender: UIButton) {
+    let flowLayout = UICollectionViewFlowLayout()
+
+    flowLayout.minimumLineSpacing = 20
+    flowLayout.minimumInteritemSpacing = 10
+    flowLayout.itemSize = CGSize(width: 80, height: 120)
+    flowLayout.scrollDirection = .Vertical
+
+    flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+
+    // 这个collection如果是本地变量可能会被回收，造成这个view闪一下就不见了。
+    collection = CollectionViewController(collectionViewLayout: flowLayout)
+    self.view.addSubview(collection!.view)
+}
+```
+
+
+### 十六进制颜色
+
+```swift
+// http://blog.csdn.net/crystal300/article/details/52690994
+// swift 3.0
+func transferStringToColor(_ colorStr:String) -> UIColor {
+
+    var color = UIColor.black
+    var cStr : String = colorStr.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
+
+    if cStr.hasPrefix("#") {
+        let index = cStr.index(after: cStr.startIndex)
+        cStr = cStr.substring(from: index)
+    }
+    if cStr.characters.count != 6 {
+        return color
+    }
+
+    let rRange = cStr.startIndex ..< cStr.index(cStr.startIndex, offsetBy: 2)
+    let rStr = cStr.substring(with: rRange)
+
+    let gRange = cStr.index(cStr.startIndex, offsetBy: 2) ..< cStr.index(cStr.startIndex, offsetBy: 4)
+    let gStr = cStr.substring(with: gRange)
+
+    let bIndex = cStr.index(cStr.endIndex, offsetBy: -2)
+    let bStr = cStr.substring(from: bIndex)
+
+    var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0;
+    Scanner(string: rStr).scanHexInt32(&r)
+    Scanner(string: gStr).scanHexInt32(&g)
+    Scanner(string: bStr).scanHexInt32(&b)
+
+    color = UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
+
+    return color
+}
+```
+
+```swift
+// swift 2.3
+func transferStringToColor(colorStr: String, alpha: CGFloat = 1.0) -> UIColor {
+    let color = UIColor.blackColor()
+    var cStr: String = colorStr.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercaseString
+
+    if cStr.hasPrefix("#") {
+        let index = cStr.startIndex.advancedBy(1)
+        cStr = cStr.substringFromIndex(index)
+    }
+
+    if cStr.characters.count == 3 {
+        cStr = cStr.characters.reduce("", combine: { $0 + String([$1, $1]) })
+    }
+
+    if cStr.characters.count != 6 {
+        return color
+    }
+
+    let rRange=Range<String.Index>(start: cStr.startIndex, end: cStr.startIndex.advancedBy(2))
+    let rStr = cStr[rRange]
+
+    let gRange=Range<String.Index>(start: cStr.startIndex.advancedBy(2), end: cStr.startIndex.advancedBy(4))
+    let gStr = cStr[gRange]
+
+    let bRange=Range<String.Index>(start: cStr.startIndex.advancedBy(4), end: cStr.startIndex.advancedBy(6))
+    let bStr = cStr[bRange]
+
+    var r: CUnsignedInt = 0, g: CUnsignedInt = 0, b: CUnsignedInt = 0
+
+    NSScanner(string: rStr).scanHexInt(&r)
+    NSScanner(string: gStr).scanHexInt(&g)
+    NSScanner(string: bStr).scanHexInt(&b)
+
+    return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: alpha)
+}
+```
+
+
+### 快速转换图片大小
+
+```bash
+sips -Z 167 AppIcon.png --out out/AppIcon-167.png
+```
+
+    -z pixelsH pixelsW
+    --resampleHeightWidth pixelsH pixelsW
+        Resample image at specified size. Image apsect ratio may be
+        altered.
+
+    --resampleWidth pixelsW
+        Resample image to specified width.
+
+    --resampleHeight pixelsH
+        Resample image to specified height.
+
+    -Z pixelsWH
+    --resampleHeightWidthMax pixelsWH
+        Resample image so height and width aren't greater than specified
+        size.
 
 *** File's owner是什么，拉了之后就可以指定button的action了 ***
