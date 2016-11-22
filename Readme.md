@@ -449,6 +449,26 @@ let vc = storyBoard.instantiateViewController(withIdentifier: "servicePage")
 
 然后通过vc.view即可获得自定义的组件。对于简单的自定义组件，用代码实现会更方便些。
 
+### 动态添加约束
+
+```swift
+let constraint = NSLayoutConstraint(
+    // view1
+    item: view1,
+    attribute: NSLayoutAttribute.Trailing,
+    relatedBy: NSLayoutRelation.Equal,
+    // view2
+    toItem: view2,
+    attribute: NSLayoutAttribute.Trailing,
+
+    multiplier: 1,
+    constant: 10
+)
+
+someView.addConstraint(constraint)
+// view1.att1 (related = <= >=) view2.attr * multiplier + constant
+```
+
 ### 随机数
 
 ```swift
