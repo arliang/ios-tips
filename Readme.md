@@ -408,4 +408,43 @@ sips -Z 167 AppIcon.png --out out/AppIcon-167.png
         Resample image so height and width aren't greater than specified
         size.
 
-*** File's owner是什么，拉了之后就可以指定button的action了 ***
+### xib 跟 controller 关联，执行到初始化时候发生错误
+
+解决方法：重新创建一个controller并同时创建xib，观察发现
+
+    点击`File's Owner`时候，有一个`view - View`的`Outlet`
+
+    点击`View`的时候，有一个`view - File's Owner`的`Outlet`
+
+### ib 使用技巧 [摘自《代码手写UI，xib和StoryBoard间的博弈，以及Interface Builder的一些小技巧》](https://onevcat.com/2013/12/code-vs-xib-vs-storyboard/)
+
+#### 同时添加多个outlet 
+
+在IB中，选中一个view并右键点击，将会出现灰色的HUD，可以在其上方便地拖拉或设定事件和outlet。
+你可以同时打开多个这样的面板来一次性添加所有outlet。右键点击面板，**随便拖动一下面板，然后再打开另一个。**
+你会发现前一个面板也留下来了，这样你就可以方便地进行拖拽设定了。
+
+#### 可视化坐标距离
+
+选中一个组件，然后按住`option键`并将鼠标移动到其他组件上试试
+
+#### 在一组view层次中进行选择
+
+按住`Cmd`和`Shift`，然后在需要选择的`view`上方按右键，就可以列出在点击位置上所有的`view`的列表。藉此就
+可以方便快速地选中想要的`view`了。
+
+#### 添加辅助线
+
+在左边的层级列表中双击某个view，然后`Cmd+_`或者`Cmd+|`即可在选中的view上添加一条水平或者垂直中心的辅助线。
+
+### Storyboard 中实现组件复用
+
+在Storyboard中，可以创建自定义的ViewController，在自定义的ViewController中，添加并实现自定义的组件，
+ViewController最好只包含该组件，这样当需要调用该组件时，通过viewcontroller的id获得该控制器：
+
+```swift
+let storyBoard = UIStoryboard(name: "ServiceStoryboard", bundle: nil)
+let vc = storyBoard.instantiateViewController(withIdentifier: "servicePage")
+```
+
+然后通过vc.view即可获得自定义的组件。对于简单的自定义组件，用代码实现会更方便些。
