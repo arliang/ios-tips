@@ -448,3 +448,10 @@ let vc = storyBoard.instantiateViewController(withIdentifier: "servicePage")
 ```
 
 然后通过vc.view即可获得自定义的组件。对于简单的自定义组件，用代码实现会更方便些。
+
+### 随机数
+
+```swift
+let MAX = 10
+Int(arc4random() % MAX)
+```
