@@ -467,6 +467,7 @@ let constraint = NSLayoutConstraint(
 
 someView.addConstraint(constraint)
 // view1.att1 (related = <= >=) view2.attr * multiplier + constant
+// 注意，当不需要第二个属性（toItem 为 nil）的时候，应该设置为 .NotAnAttribute，否则会报错
 ```
 
 ### 随机数
@@ -474,4 +475,25 @@ someView.addConstraint(constraint)
 ```swift
 let MAX = 10
 Int(arc4random() % MAX)
+```
+
+### [Xcode Indexing 的 bug](http://stackoverflow.com/questions/24782721/xcode-swift-indexing-forever) 
+
+```swift
+// 这样写可能会导致 Xcode indexing 假死 
+struct Objects {
+    let objectA = [
+        "text1", 
+        "text2", 
+        "text3", 
+        "text4"
+    ]
+}
+
+// 需要改成这样
+struct Objects {
+    let objectA = [ "text1",  "text2",  "text3",  "text4"]
+}
+
+// 简直无语
 ```
