@@ -497,3 +497,5 @@ struct Objects {
 
 // 简直无语
 ```
+
+### `view`无法居中可能是缺少`height`或者`width`约束
