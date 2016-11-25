@@ -498,4 +498,14 @@ struct Objects {
 // 简直无语
 ```
 
-### `view`无法居中可能是缺少`height`或者`width`约束
+### `view`无法居中可能是缺少`height`或者`width`约束，也可能因此无法点击
+
+### 扩展File's Owner 的 Attributes 面板 @IBDesignable @IBInspectable
+
+```swift
+@IBDesignable
+class IconButtonViewController: UIViewController {
+    这样在File's Owner Attribute面板中就会增加一个Test属性
+    @IBInspectable var test:String
+}
+```
