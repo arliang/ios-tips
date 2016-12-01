@@ -418,7 +418,7 @@ sips -Z 167 AppIcon.png --out out/AppIcon-167.png
 
 ### ib 使用技巧 [摘自《代码手写UI，xib和StoryBoard间的博弈，以及Interface Builder的一些小技巧》](https://onevcat.com/2013/12/code-vs-xib-vs-storyboard/)
 
-#### 同时添加多个outlet 
+#### 同时添加多个outlet
 
 在IB中，选中一个view并右键点击，将会出现灰色的HUD，可以在其上方便地拖拉或设定事件和outlet。
 你可以同时打开多个这样的面板来一次性添加所有outlet。右键点击面板，**随便拖动一下面板，然后再打开另一个。**
@@ -477,15 +477,15 @@ let MAX = 10
 Int(arc4random() % MAX)
 ```
 
-### [Xcode Indexing 的 bug](http://stackoverflow.com/questions/24782721/xcode-swift-indexing-forever) 
+### [Xcode Indexing 的 bug](http://stackoverflow.com/questions/24782721/xcode-swift-indexing-forever)
 
 ```swift
-// 这样写可能会导致 Xcode indexing 假死 
+// 这样写可能会导致 Xcode indexing 假死
 struct Objects {
     let objectA = [
-        "text1", 
-        "text2", 
-        "text3", 
+        "text1",
+        "text2",
+        "text3",
         "text4"
     ]
 }
@@ -520,3 +520,104 @@ class IconButtonViewController: UIViewController {
 ### 遍历数组
 
 `for (i, cell) in cells.enumerate() { /* ... */ }`
+
+### iOS 手势识别 - gestureRecognizer
+
+    http://blog.csdn.net/sirchenhua/article/details/7296230
+
+向左向右轻划
+
+```objective-c
+UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc]
+                                        initWithTarget:self
+                                                action:@selector(handleSwipeLeft)];
+swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+[self.view addGestureRecognizer:swipeLeft];
+[swipeLeft release];
+
+UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc]
+                                         initWithTarget:self
+                                                 action:@selector(handleSwipeRight)];
+swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+[self.view addGestureRecognizer:swipeRight];
+[swipeRight release];
+```
+
+单指单击
+
+```objective-c
+UITapGestureRecognizer *singleFingerOne = [[UITapGestureRecognizer alloc]
+                                            initWithTarget:self
+                                                    action:@selector(handleSingleFingerEvent:)];
+singleFingerOne.numberOfTouchesRequired = 1; //手指数
+singleFingerOne.numberOfTapsRequired = 1; //tap次数
+singleFingerOne.delegate = self;
+[self.view addGestureRecognizer:singleFingerOne];
+```
+
+单指双击
+
+```objective-c
+UITapGestureRecognizer *singleFingerTwo = [[UITapGestureRecognizer alloc]
+                                            initWithTarget:self
+                                                    action:@selector(handleSingleFingerEvent:)];
+singleFingerTwo.numberOfTouchesRequired = 1;
+singleFingerTwo.numberOfTapsRequired = 2;
+singleFingerTwo.delegate = self;
+[self.view addGestureRecognizer:singleFingerTwo];
+```
+
+双指单击和双击
+```objective-c
+UITapGestureRecognizer *doubleFingerOne = [[UITapGestureRecognizer alloc]
+                                            initWithTarget:self
+                                                    action:@selector(handleDoubleFingerEvent:)];
+doubleFingerOne.numberOfTouchesRequired = 2;
+doubleFingerOne.numberOfTapsRequired = 1;
+doubleFingerOne.delegate = self;
+
+UITapGestureRecognizer *doubleFingerTwo = [[UITapGestureRecognizer alloc]
+                                            initWithTarget:self
+                                                    action:@selector(handleDoubleFingerEvent:)];
+doubleFingerTwo.numberOfTouchesRequired = 2;
+doubleFingerTwo.numberOfTapsRequired = 2;
+doubleFingerTwo.delegate = self;
+
+[self.view addGestureRecognizer:doubleFingerOne];
+[self.view addGestureRecognizer:doubleFingerTwo];
+
+//如果不加下面的话，当单指双击时，会先调用单指单击中的处理，再调用单指双击中的处理
+[singleFingerOne requireGestureRecognizerToFail:singleFingerTwo];
+//同理双指亦是如此
+[doubleFingerOne requireGestureRecognizerToFail:doubleFingerTwo];
+```
+
+事件处理方法：
+
+```objective-c
+- (void)handleSingleFingerEvent:(UITapGestureRecognizer *)sender
+{
+    if (sender.numberOfTapsRequired == 1) {
+        //单指单击
+        NSLog(@"单指单击");
+    }else if(sender.numberOfTapsRequired == 2){
+        //单指双击
+        NSLog(@"单指双击");
+     }
+ }
+ //处理双指事件
+- (void)handleDoubleFingerEvent:(UITapGestureRecognizer *)sender
+{
+    if (sender.numberOfTapsRequired == 1) {
+         //双指单击
+         NSLog(@"双指单击");
+     }else if(sender.numberOfTapsRequired == 2){
+         //双指双击
+         NSLog(@"双指双击");
+     }
+}
+```
+
+### UIImageView addGestureRecognizer 失败
+
+`imageView.userInteractionEnabled = true`
