@@ -509,3 +509,14 @@ class IconButtonViewController: UIViewController {
     @IBInspectable var test:String
 }
 ```
+
+### 导入`Pods`库的步骤
+
+1. 在`Podfiles`加入需要引入的库，比如：`pod 'RxSwift', '~> 2.3'`
+2. 选择工程的 `Target` -> `Build Settings` 菜单 -> 搜索 `header`, 找到`User Header Search Paths`
+3. 添加`$(PODS_ROOT)`，并选择`recursive`
+
+
+### 遍历数组
+
+`for (i, cell) in cells.enumerate() { /* ... */ }`
