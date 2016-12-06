@@ -621,3 +621,19 @@ doubleFingerTwo.delegate = self;
 ### UIImageView addGestureRecognizer 失败
 
 `imageView.userInteractionEnabled = true`
+
+
+### ViewController 生命周期
+
+    http://blog.csdn.net/qijianli/article/details/7826979/
+
+init -> loadView -> viewDidLoad -> viewWillAppear -> viewDidAppear -> viewWillDisappear -> viewDidDisppear -> viewDidUnload -> dealloc
+
+viewDidUnload -> loadView
+
+viewDidDisappear -> viewWillAppear
+
+
+### 使用各种 ViewController 的时候，不要私自 addSubview 到当前 view，应该用 presentViewController 方法
+
+`controller.presentViewController(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)`
