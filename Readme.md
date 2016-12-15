@@ -637,3 +637,73 @@ viewDidDisappear -> viewWillAppear
 ### 使用各种 ViewController 的时候，不要私自 addSubview 到当前 view，应该用 presentViewController 方法
 
 `controller.presentViewController(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)`
+
+### 异步调用方法
+
+```swift
+// 第二个参数是纳秒，10e-9秒
+let time = dispatch_time(DISPATCH_TIME_NOW, Int64(5e8))
+dispatch_after(time, dispatch_get_global_queue(0, 0)) { () -> Void in
+    self.scrollView.contentSize = {
+        let height = self.middleContainer.frame.size.height + self.imageView.frame.size.height
+        let size = CGSize(width: self.view.frame.size.width, height: height)
+        return size
+    }()
+}
+```
+
+### [增加了scrollView之后手势失效](http://www.jianshu.com/p/c041398fcd6d)
+
+```swift
+func makeGestureAvailable(){
+    if let gestureArray = self.navigationController?.view.gestureRecognizers {  // 这里的view换成自己的view
+        gestureArray.forEach({ (gesture) in
+            if gesture.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+                self.scrollView.panGestureRecognizer.requireGestureRecognizerToFail(gesture)
+            }
+        })
+    }
+}
+```
+
+### git 设置socks代理
+
+```bash
+git config --global https.proxy 'socks5://127.0.0.1:1080'
+git config --global http.proxy 'socks5://127.0.0.1:1080'
+```
+
+### String.Index
+
+```swift
+let greeting = "Guten Tag!"
+greeting[greeting.startIndex]
+// G
+greeting[greeting.index(before: greeting.endIndex)]
+// !
+greeting[greeting.index(after: greeting.startIndex)]
+// u
+let index = greeting.index(greeting.startIndex, offsetBy: 7)
+greeting[index] // 注意使用方式
+// a
+```
+
+### String 转换成 HexString
+
+```swift
+func toHexString(int: Int) -> String{
+    let highHex = int / 16 % 16
+    let lowHex = int % 16
+    let charList = "0123456789ABCDEF"
+    let highIndex = charList.index(charList.startIndex, offsetBy: highHex)
+    let lowIndex = charList.index(charList.startIndex, offsetBy: lowHex)
+    return "\(charList[highIndex])\(charList[lowIndex])"
+}
+```
+
+### String 和 Data 互换
+
+```swift
+"hello".data(using: String.Encoding.isoLatin1, allowLossyConversion: false) // 这个false是什么？
+String(data: Data([0x68, 0x65, 0x6C, 0x6C 0x6F]), encoding: String.Encoding.isoLatin1)
+```
