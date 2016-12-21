@@ -707,3 +707,13 @@ func toHexString(int: Int) -> String{
 "hello".data(using: String.Encoding.isoLatin1, allowLossyConversion: false) // 这个false是什么？
 String(data: Data([0x68, 0x65, 0x6C, 0x6C 0x6F]), encoding: String.Encoding.isoLatin1)
 ```
+
+
+### 'SocketRocket/SRWebSocket.h' file not found with <angled> include; use "quotes" instead
+
+在`header search path`中加入对应的目录即可，比如`$(PODS_ROOT)/**`
+
+
+### Apple Mach-O Linker Error ld: framework XXX not found
+
+尝试了各种方法都没效果后，可以试试把依赖的目录复制到项目中
