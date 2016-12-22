@@ -717,3 +717,99 @@ String(data: Data([0x68, 0x65, 0x6C, 0x6C 0x6F]), encoding: String.Encoding.isoL
 ### Apple Mach-O Linker Error ld: framework XXX not found
 
 尝试了各种方法都没效果后，可以试试把依赖的目录复制到项目中
+
+
+### Reading data: The file “Info.plist” couldn’t be opened because there is no such file.
+
+`Target -> Build Phases -> Copy Bundle Resources`
+Remove all incorrect referrences in the list
+
+
+### 腾讯信鸽推送
+
+使用测试模式可以发送，非测试模式提示“无效帐号，请检查后重试”
+
+好像是腾讯的bug？只能用测试预览模式发送，不能点击正常推送
+
+
+1. 重装app，device_token会重新生成
+2. 在应用中的时候不会收到通知
+3. 用户拒绝接受通知不会产生device_token
+4. 在系统设置中允许了就会触发产生device_token
+
+**非常重要：environment参数ios必选，2表示开发环境**
+
+
+如何获得token？
+
+```swift
+// AppDelegate
+func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    let token:String = deviceToken.description.trimmingCharacters(in: CharacterSet(charactersIn: "<>"))
+    print("token==\(token)")
+}
+
+func registerNofitication() {
+    UIApplication.shared.registerForRemoteNotifications()
+}
+
+func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+    self.registerNofitication()
+}
+```
+
+```javascript
+// APN 发送一个gogogo的alert通知
+{"aps":{"alert":"gogogo"}}
+```
+
+更多资料参考：http://developer.qq.com/wiki/xg/%E6%9C%8D%E5%8A%A1%E7%AB%AFAPI%E6%8E%A5%E5%85%A5/Rest%20API%20%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/Rest%20API%20%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html
+
+配合postman使用的js脚本
+
+```javascript
+/* 
+POST /v2/push/single_device? HTTP/1.1
+Host: openapi.xg.qq.com
+
+device_token=965BD3A434D52F49A80666D4C5471C9923187A0A2472FC4E2FE4D6C1DEA83FAF&message_type=1&message=hello%20test&expire_time=0
+
+*/
+(function() {
+    function getKOSortedAndJoinOf(para) {
+        return para.split('&').map(p=>decodeURI(p)).sort().join('')
+    }
+    function joinStr({method, url, query, secretKey}) {
+        return method.toUpperCase() + url.replace(/.*?https?:\/\/|\?.*$/g, '') + getKOSortedAndJoinOf(query) + secretKey
+    }
+    function caculateMD5(joinedStr) {
+        return CryptoJS.MD5(joinedStr).toString()
+    }
+    var method = 'POST'
+      , url = document.querySelector('#url').value
+      , orgParam = pm.request.body.getData(true)
+      , secretKey = '三十二位'
+      , accessId = '十位阿拉伯数字？'
+      , timeStamp = parseInt(+new Date() / 1000)
+      , query = orgParam.replace(/&access_id.*$/, '') + '&access_id=' + accessId + '&timestamp=' + timeStamp
+      , sign = caculateMD5(joinStr({
+          method,
+          url,
+          query,
+          secretKey
+        }))
+    pm.request.body.codeMirror.setValue(query + '&sign=' + sign)
+
+    var testInfo = {
+        method: 'POST',
+        url: 'http://openapi.xg.qq.com/v2/push/single_device',
+        //有四个参数，
+        query: 'access_id=123&timestamp=1386691200&Param1=Value1&Param2=Value2',
+        secretKey: 'abcde'
+    }
+    // 检测 sign 的有效性
+    var expectedStr = 'POSTopenapi.xg.qq.com/v2/push/single_deviceParam1=Value1Param2=Value2access_id=123timestamp=1386691200abcde'
+    var expectedMD5 = 'ccafecaef6be07493cfe75ebc43b7d53'
+    console.log(`${joinStr(testInfo)}\n${expectedStr}\n${caculateMD5(joinStr(testInfo))}\n${expectedMD5}`)
+})()
+```
