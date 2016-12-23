@@ -745,7 +745,8 @@ Remove all incorrect referrences in the list
 ```swift
 // AppDelegate
 func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    let token:String = deviceToken.description.trimmingCharacters(in: CharacterSet(charactersIn: "<>"))
+    // deviceToken 转字符串
+    let token:String = deviceToken.map { String(format: "%02x", $0) }.joined().uppercased()
     print("token==\(token)")
 }
 
