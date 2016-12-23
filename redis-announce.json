@@ -1,0 +1,28 @@
+{
+  "main": {
+    "template_id": "ctGYw7DxzYlCucIEW4n0_dhfyzBCCYq942nijeO0vWc",
+    "openid": "owUeVt65zMgFAIlWBCvKfjFCj1PM",
+    "data_arr": "{\"url\":\"https:\\\/\\\/open.weixin.qq.com\\\/connect\\\/oauth2\\\/authorize?appid=wxb6412bb652d691e2&redirect_uri=http%3A%2F%2Fcmskzs.3cuc.com.cn%2Fpay%2Fusersuccess%3Fid%3D16110102100000090%26%26time%3D1477929600%26%26uid%3D100024&response_type=code&scope=snsapi_base&state=chaomeng#wechat_redirect\",\"code\":\"1660\",\"pay_time\":1482204475,\"pay_type\":{\"id\":1,\"name\":\"\\u5fae\\u4fe1\\u53f0\\u5361\\u652f\\u4ed8\"},\"pay_price\":\"2.00\",\"remark\":\"\\u86cb\\u7092\\u996d@\\u9ad8\\u65b0\"}",
+    "cont_type": "1",
+    "pjname": "pay_cmskzs",
+    "id": "16110102100000090",
+    "mobile": "13595129149",
+    "uid": "100024",
+    "log_time": "1477929600",
+    "pay_type": "1",
+    "createtime": 1482204476,
+    "send_type": "0",
+    "message_id": "191"
+  },
+  "data_arr": {
+    "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wxb6412bb652d691e2&redirect_uri=http%3A%2F%2Fcmskzs.3cuc.com.cn%2Fpay%2Fusersuccess%3Fid%3D16110102100000090%26%26time%3D1477929600%26%26uid%3D100024&response_type=code&scope=snsapi_base&state=chaomeng#wechat_redirect",
+    "code": "1660",
+    "pay_time": 1482204475,
+    "pay_type": {
+      "id": 1,
+      "name": "\u5fae\u4fe1\u53f0\u5361\u652f\u4ed8"
+    },
+    "pay_price": "2.00",
+    "remark": "\u86cb\u7092\u996d@\u9ad8\u65b0"
+  }
+}

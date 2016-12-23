@@ -1,0 +1,22 @@
+{
+  "name": "tips-ios",
+  "version": "1.0.0",
+  "description": "## FAQ",
+  "main": "socket-client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arliang/ios-tips.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arliang/ios-tips/issues"
+  },
+  "homepage": "https://github.com/arliang/ios-tips#readme",
+  "dependencies": {
+    "node-websocket": "^0.1.6"
+  }
+}

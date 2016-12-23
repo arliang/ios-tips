@@ -786,6 +786,27 @@ device_token=965BD3A434D52F49A80666D4C5471C9923187A0A2472FC4E2FE4D6C1DEA83FAF&me
     function caculateMD5(joinedStr) {
         return CryptoJS.MD5(joinedStr).toString()
     }
+
+    function replaceMessageWith(obj) {
+        var message = encodeURI(JSON.stringify(obj))
+        var body = pm.request.body.getData(true)
+        body = body.replace(/(.*&?message=)[^&]+(.*)/, '$1' + message + '$2')
+        pm.request.body.codeMirror.setValue(body)
+    }
+
+    replaceMessageWith({
+        "aps" : {
+            //  "alert" : {
+            //     "loc-key" : "hello",
+            //     "loc-args" : [ "Jenna", "Frank"]
+            // },
+            "message": "收到一条新消息",
+            "content-available" : 1 // 有这个才能获取消息！
+            //"sound" : "chime"
+        },
+        "mykey" : "test"
+    })
+
     var method = 'POST'
       , url = document.querySelector('#url').value
       , orgParam = pm.request.body.getData(true)

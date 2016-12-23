@@ -1,0 +1,13 @@
+GET / HTTP/1.1
+Host: 192.168.0.22:7003
+Connection: Upgrade
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade: websocket
+Origin: http://coolaf.com
+Sec-WebSocket-Version: 13
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36
+Accept-Encoding: gzip, deflate, sdch
+Accept-Language: zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,en-US;q=0.2,zh-TW;q=0.2
+Sec-WebSocket-Key: 1W5rHWd2XwOIYLVH1Ne2SQ==
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
